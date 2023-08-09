@@ -6,17 +6,19 @@ class Question(db.Model):
     question = db.Column(db.String(), unique=False, nullable=False) 
     answer = db.Column(db.String(), unique=False, nullable=False)
 
-    options = db.relationship("Option", backref="question", lazy = True)
+    options = db.relationship("Options", backref="question", lazy = True)
     
 
     def serialize(self):
+        serialized_options = [i.serialize()["option"] for i in self.options]
         return {
             "id": self.id,
             "question": self.question, 
-            "answer": self.answer
+            "answer": self.answer,
+            "options" : serialized_options
         }
     
-class Option(db.Model):
+class Options(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False) 
     option = db.Column(db.String(), unique=False, nullable=False)
