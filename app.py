@@ -22,6 +22,6 @@ migrate.init_app(app,db)
 #debug = os.environ.get("FLASK_DEBUG", False)
 
 if __name__ == "__main__":
-    app.run(host=os.environ.get("APP_HOST", "0.0.0.0"), 
-            port=os.environ.get("FLASK_DEVELOPMENT_PORT", 8000), 
+    app.run(host=os.environ.get("FLASK_RUN_HOST", "0.0.0.0"), 
+            port=os.environ.get("FLASK_RUN_PORT", 8000), 
             debug=True)

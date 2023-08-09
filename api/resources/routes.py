@@ -1,7 +1,6 @@
 from flask import jsonify, request
 from flask_restful import Resource, abort
 
-from users import users
 #---import models
 from models.question import Question
 #--- import db

@@ -12,6 +12,7 @@ flask-restful = "^0.3.10"
 python-dotenv = "^1.0.0"
 flask-sqlalchemy = "^3.0.5"
 flask-migrate = "^4.0.4"
+flask-db = "^0.3.2"
 
 
 [build-system]
