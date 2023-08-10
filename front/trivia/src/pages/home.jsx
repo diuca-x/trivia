@@ -3,7 +3,8 @@ import React from "react";
 const Home = () =>{
     return(
         <>
-        <p>asdsada</p>
+            
+            <button class="btn btn-primary">start</button>
         </>
     )
 }
