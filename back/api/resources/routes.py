@@ -1,4 +1,5 @@
 from flask import jsonify, request, make_response
+from api.resources.functions import give_answer
 from flask_restful import Resource, abort
 
 #---import models
@@ -7,6 +8,7 @@ from models.tables import Question, Options
 #--- import db
 from extensions import db
 
+import random
 
 
 class SingleQuestion(Resource): #to get all questions, or create a new one
@@ -143,3 +145,32 @@ class handleOption(Resource): #to get a specific option, delete an option or mod
 
         return jsonify({"msg": "question deleted"})
 
+class startGame(Resource): #to start the game
+    def get(self,ammount):
+
+        questions = Question.query.all()
+        random.shuffle(questions) #esto o generar numero por id y extraer del array esos numeros por id
+        alldic = []
+
+        if(ammount == 0):
+            
+            
+            for i in questions:
+
+                question_dic = i.serialize()
+                question_result = give_answer(question_dic)
+                alldic.append(question_result)
+            
+        else:
+           
+            for i in range(ammount):
+                
+                question_dic = questions[i].serialize()
+                
+                question_result = give_answer(question_dic)
+
+                alldic.append(question_result)
+
+
+        return jsonify(alldic)            
+        

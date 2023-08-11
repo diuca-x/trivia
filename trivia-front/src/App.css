@@ -40,3 +40,10 @@
 .read-the-docs {
   color: #888;
 }
+.cont {
+  /*  resulta que no tenia que cambiar el body si no el div que esta en layout*/
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

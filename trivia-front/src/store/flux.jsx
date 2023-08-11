@@ -28,14 +28,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try{
 					
 					// fetching data from the backend
-					const resp = await fetch( "http://127.0.0.1:8000/api/question", 
+					
+					const resp = await fetch( import.meta.env.VITE_BACKEND_URL+ "api/question", 
 						{method: "GET",
 						headers: {
 						  "Content-Type": "application/json",
 						}})
 						
 					const data = await resp.json()	
-					console.log(data)
 					// don't forget to return something, that is how the async resolves
 					return data;
 				}catch(error){
