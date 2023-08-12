@@ -9,7 +9,9 @@ from models.tables import Question, Options
 from extensions import db
 
 import random
+#--- for excel reading
 
+from flask import  render_template, request
 
 class SingleQuestion(Resource): #to get all questions, or create a new one
     def get(self):
@@ -31,7 +33,7 @@ class SingleQuestion(Resource): #to get all questions, or create a new one
         if not data.get("question") or not data.get("answer") or not options:
             return make_response(jsonify({"msg" : "missing data"}),400)
         if len(options) < 3:
-            return make_response(jsonify({"msg" : "need to have at least 3 options"}),400)
+            return make_response(jsonify({"msg" : "need to have at least 3 options, coudnt create question " + data.get("question")}),400)
 
         
         question_to_add = Question(question = data.get("question"), answer= data.get("answer"))
@@ -174,3 +176,9 @@ class startGame(Resource): #to start the game
 
         return jsonify(alldic)            
         
+
+class asd(Resource): #to start the game
+    def post(self):
+        data = request.json
+        
+        return jsonify({"msg":"asd"})
