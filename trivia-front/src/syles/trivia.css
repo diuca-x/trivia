@@ -35,4 +35,27 @@ button {
  .btn-14:active {
    top: 2px;
  }
- 
+ /*----------------------------------------------------------------------------------*/
+ .progress_bar {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: gray;
+  transition: background-color 0.3s;
+  
+}
+
+.correct {
+  background-color: green;
+}
+
+.incorrect {
+  background-color: red;
+}

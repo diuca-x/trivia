@@ -14,7 +14,7 @@ def give_answer(question_dic):
     question_dic["options"] = options3
 
     question_dic["answered"] = False
-                
+    
     del question_dic["id"]
 
     return question_dic

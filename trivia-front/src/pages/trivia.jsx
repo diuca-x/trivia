@@ -12,7 +12,7 @@ const Trivia = () =>{
         (async () => {
           try {
             
-            const response = await fetch(import.meta.env.VITE_BACKEND_URL +`api/startGame/0`,
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL +`api/startGame/10`,
               {
                 method: "GET",
                 headers: {
@@ -29,10 +29,25 @@ const Trivia = () =>{
         })();
       }, []);
 
-    
+    useEffect(() => {
+      if(Array.isArray(questions)){
+        if(index == questions.length ){
+          alert("finished")
+          let c = 0
+          for (let i of questions){
+              if(i.correct == true){
+                  c+=1
+              }
+          }
+          alert(`number of correct answers: ${c}`)
+          navigate('/', { replace: true })
+        }
+      }
+      
+    },[])
    
             
-    const option_selectionator = (option) => {
+    const option_selectionator = async (option) => {
         let new_questions = questions
         let actual_question = new_questions[index]
         actual_question["answered"] = true
@@ -46,19 +61,6 @@ const Trivia = () =>{
         new_questions[index] = actual_question 
         setQuestions(new_questions)
         setQuestion(questions[index+1])
-
-        if(index+1 == questions.length){
-            alert("finished")
-            let c = 0
-            for (let i of questions){
-                if(i.correct == true){
-                    c+=1
-                }
-            }
-            alert(`number of correct answers: ${c}`)
-            navigate('/', { replace: true })
-        }
-
         setIndex(index+1)
     }
 
@@ -78,6 +80,23 @@ const Trivia = () =>{
                             })}
                             
                             </>)}
+                </div>
+                <div className="row  mt-5">
+                  <div class="progress_bar justify-content-center">
+                  {question && (<>
+                            {questions.map((x,index) => {
+                              
+                                return(
+                                    <>
+                                    <div class={`circle ${x.correct != null? x.correct == false? "incorrect":"correct" :"" }`}></div>
+                                    </>
+                                )
+                            })}
+                            
+                            </>)}
+                    
+                    
+                  </div>
                 </div>
                 
             </div>
