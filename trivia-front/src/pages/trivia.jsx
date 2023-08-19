@@ -29,39 +29,30 @@ const Trivia = () =>{
         })();
       }, []);
 
-    useEffect(() => {
-      if(Array.isArray(questions)){
-        if(index == questions.length ){
-          alert("finished")
-          let c = 0
-          for (let i of questions){
-              if(i.correct == true){
-                  c+=1
-              }
-          }
-          alert(`number of correct answers: ${c}`)
-          navigate('/', { replace: true })
-        }
-      }
-      
-    },[])
+    
    
             
-    const option_selectionator = async (option) => {
-        let new_questions = questions
-        let actual_question = new_questions[index]
-        actual_question["answered"] = true
-        if(option == question.answer){
-            alert("exito")
-            actual_question["correct"] = true
+    const option_selectionator = (option) => {
+      
+        let new_questions = [...questions]
+        let new_question = question
+        new_question["answered"] = true
+        if(option == question.answer){  
+          new_question["correct"] = true
         } else{
-            alert("no exito")
-            actual_question["correct"] = false
+          new_question["correct"] = false
         }
-        new_questions[index] = actual_question 
+        new_questions[index] = new_question 
         setQuestions(new_questions)
-        setQuestion(questions[index+1])
-        setIndex(index+1)
+        setQuestion(new_question)
+      
+    }
+
+    const go_nextinator = () =>{
+      setQuestion(questions[index+1])
+      let new_index = index
+      new_index = new_index + 1
+      setIndex(new_index)
     }
 
     return(
@@ -72,35 +63,55 @@ const Trivia = () =>{
                     {question && (<>
                             <h2>{question.question}</h2>
                             {question.options.map((x,index) => {
+
                                 return(
-                                    <>
-                                    <div className="col" key={index}><button className="custom-btn btn-14 my-3" onClick={() =>{option_selectionator(x)}}>{x}</button></div>
-                                    </>
+                                    <div className="row" key={index}>
+                                      <div className="col-12"  ><button  className={`custom-btn btn-14 my-3 ${question.correct != null? x != question.answer ? "incorrect":"correct" :"" }`} onClick={() =>{question.answered == false? option_selectionator(x):""}}>{x}</button></div>
+                                    </div>
                                 )
                             })}
-                            
+                            <button className=" my-3 rounded w-25 ms-auto " onClick={() =>{go_nextinator()}} disabled={!question.answered} data-bs-toggle = {index +1 == questions.length?"modal":""}
+                            data-bs-target= {index +1 == questions.length? "#exampleModal":""}
+                            >{index +1 == questions.length? "Finish":"Next"} </button>
                             </>)}
+                           
                 </div>
+                
                 <div className="row  mt-5">
-                  <div class="progress_bar justify-content-center">
+                  <div className="progress_bar justify-content-center">
                   {question && (<>
                             {questions.map((x,index) => {
                               
                                 return(
                                     <>
-                                    <div class={`circle ${x.correct != null? x.correct == false? "incorrect":"correct" :"" }`}></div>
+                                    <div key={index} className={`circle ${x.correct != null? x.correct == false? "incorrect":"correct" :"" }`}></div>
                                     </>
                                 )
                             })}
                             
                             </>)}
-                    
-                    
                   </div>
                 </div>
                 
             </div>
-
+            
+            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div className="modal-dialog">
+                                <div className="modal-content">
+                                  <div className="modal-header">
+                                    <h1 className="modal-title fs-5" id="exampleModalLabel">Finished!</h1>
+                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div className="modal-body">
+                                  {`number of correct answers: ${questions? questions.filter(x => x.correct === true).length : ""}`}
+                                  </div>
+                                  <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => {navigate('/', { replace: true })}}>Back to menu</button>
+                                    
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
         </>
     )
 }

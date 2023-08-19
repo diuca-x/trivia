@@ -1,3 +1,5 @@
+
+
 button {
     margin: 20px;
     outline: none;
@@ -17,9 +19,9 @@ button {
   }
 
   .btn-14 {
-    background: gray;
-   color: #fff;
-   z-index: 1;
+    background-color: rgb(199, 199, 199);
+    color: #3b3b3b;
+    z-index: 1;
  }
  .btn-14:after {
    position: absolute;
@@ -47,7 +49,7 @@ button {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: gray;
+  background-color: rgb(255, 255, 255);
   transition: background-color 0.3s;
   
 }
