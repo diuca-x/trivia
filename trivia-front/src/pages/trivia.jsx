@@ -104,6 +104,20 @@ const Trivia = () =>{
                                   </div>
                                   <div className="modal-body">
                                   {`number of correct answers: ${questions? questions.filter(x => x.correct === true).length : ""}`}
+                                  <div className="progress_bar justify-content-center">
+                                   
+                                    {questions && (<>
+                                              {questions.map((x,index) => {
+                                                
+                                                  return(
+                                                      <>
+                                                      <div key={index} className={`circle my-5 ${x.correct != null? x.correct == false? "incorrect":"correct" :"" }`}></div>
+                                                      </>
+                                                  )
+                                              })}
+                                              
+                                  </>)}
+                  </div>
                                   </div>
                                   <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => {navigate('/', { replace: true })}}>Back to menu</button>
