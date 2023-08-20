@@ -9,6 +9,7 @@ const Trivia = () =>{
     const navigate = useNavigate()
 
     const[hint, setHint] = useState("") 
+    const[score, setScore] = useState(0) 
 
     useEffect(() => {
         (async () => {
@@ -51,6 +52,18 @@ const Trivia = () =>{
     }
 
     const go_nextinator = () =>{
+      
+      if(question.correct){
+        let new_score = score
+        if (hint != ""){
+          new_score += 5
+        } else{
+          new_score += 10
+        }
+        setScore(new_score)
+      }
+
+
       setQuestion(questions[index+1])
       let new_index = index
       new_index = new_index + 1
@@ -121,7 +134,8 @@ const Trivia = () =>{
                                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                   </div>
                                   <div className="modal-body">
-                                  {`number of correct answers: ${questions? questions.filter(x => x.correct === true).length : ""}`}
+                                    <p>{`Number of correct answers: ${questions? questions.filter(x => x.correct === true).length : ""}`}</p> 
+                                    <p>{`Total score: ${score}`}</p>
                                   <div className="progress_bar justify-content-center">
                                    
                                     {questions && (<>
