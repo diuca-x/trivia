@@ -41,8 +41,11 @@ const Trivia = () =>{
       const [time, setTime] = useState({ minutes: 0, seconds: 0 });
       const [isRunning, setRunning] = useState(true)
       useEffect(() => {
+          
+          let interval
           if(isRunning){
-            const interval = setInterval(() => {
+            
+            interval = setInterval(() => {
               setTime(prevTime => {
                   const newSeconds = prevTime.seconds + 1;
                   if (newSeconds === 60) {
@@ -50,21 +53,18 @@ const Trivia = () =>{
                   }
                   return { ...prevTime, seconds: newSeconds };
               });
-              questions && index +1 == questions.length? setRunning(false):console.log("asd")
+              
               }, 1000);
     
               return () => clearInterval(interval);
+          } else{
+            clearInterval(interval);
           }
           
-      }, []);
-
-      useEffect(() => {
-        // Handle state updates when the timer stops
-        if (!isRunning) {
-          setTime({minutes: time.minutes, seconds: time.seconds});
           
-        }
       }, [isRunning]);
+
+      
    
             
     const option_selectionator = (option) => {
@@ -101,6 +101,11 @@ const Trivia = () =>{
       new_index = new_index + 1
       setIndex(new_index)
       setHint("")
+
+      if(index +1 == questions.length){
+        
+        setRunning(false)
+      } 
     }
 
     const question_removinator = () =>{
@@ -131,7 +136,9 @@ const Trivia = () =>{
                             <div className="row">
 
                             <button  className={` rounded w-25 me-auto my-3`} disabled={question.answered || hint != ""} onClick={() =>{ question_removinator()}}>Hint</button>
-                                <button className=" my-3 rounded w-25 ms-auto " onClick={() =>{go_nextinator()}} disabled={!question.answered} data-bs-toggle = {index +1 == questions.length?"modal":""}
+                                <button className=" my-3 rounded w-25 ms-auto " onClick={() =>{
+                                  
+                                  go_nextinator()}} disabled={!question.answered} data-bs-toggle = {index +1 == questions.length?"modal":""}
                               data-bs-target= {index +1 == questions.length? "#exampleModal":""}
                               >{index +1 == questions.length? "Finish":"Next"} </button>
                             
