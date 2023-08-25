@@ -32,8 +32,8 @@ class SingleQuestion(Resource): #to get all questions, or create a new one
         
         if not data.get("question") or not data.get("answer") or not options:
             return make_response(jsonify({"msg" : "missing data"}),400)
-        if len(options) < 3:
-            return make_response(jsonify({"msg" : "need to have at least 3 options, coudnt create question " + data.get("question")}),400)
+        if len(options) < 2:
+            return make_response(jsonify({"msg" : "need to have at least 2 options, coudnt create question " + data.get("question")}),400)
 
         
         question_to_add = Question(question = data.get("question"), answer= data.get("answer"))

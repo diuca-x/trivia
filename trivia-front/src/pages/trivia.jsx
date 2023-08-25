@@ -1,8 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../syles/trivia.css"
 
+import { Context } from "../store/appContext";
+
+
 const Trivia = () =>{
+    const {store, actions} = useContext(Context)
+
+
     const [questions, setQuestions] = useState()
     const [question, setQuestion] = useState()
     const[index, setIndex] = useState(0) 
@@ -32,7 +38,33 @@ const Trivia = () =>{
         })();
       }, []);
 
+      const [time, setTime] = useState({ minutes: 0, seconds: 0 });
+      const [isRunning, setRunning] = useState(true)
+      useEffect(() => {
+          if(isRunning){
+            const interval = setInterval(() => {
+              setTime(prevTime => {
+                  const newSeconds = prevTime.seconds + 1;
+                  if (newSeconds === 60) {
+                  return { minutes: prevTime.minutes + 1, seconds: 0 };
+                  }
+                  return { ...prevTime, seconds: newSeconds };
+              });
+              questions && index +1 == questions.length? setRunning(false):console.log("asd")
+              }, 1000);
     
+              return () => clearInterval(interval);
+          }
+          
+      }, []);
+
+      useEffect(() => {
+        // Handle state updates when the timer stops
+        if (!isRunning) {
+          setTime({minutes: time.minutes, seconds: time.seconds});
+          
+        }
+      }, [isRunning]);
    
             
     const option_selectionator = (option) => {
@@ -82,6 +114,7 @@ const Trivia = () =>{
     return(
         <>
             <div className="container-fluid text-center ">
+                {`Time: ${time.minutes < 10 ? '0' : ''}${time.minutes}:${time.seconds < 10 ? '0' : ''}${time.seconds}`}
                 <div className="row "> <h1>Trivia</h1></div>
                 <div className="row">
                     {question && (<>
@@ -136,6 +169,7 @@ const Trivia = () =>{
                                   <div className="modal-body">
                                     <p>{`Number of correct answers: ${questions? questions.filter(x => x.correct === true).length : ""}`}</p> 
                                     <p>{`Total score: ${score}`}</p>
+                                    <p>{`Time: ${time.minutes < 10 ? '0' : ''}${time.minutes}:${time.seconds < 10 ? '0' : ''}${time.seconds}`}</p>
                                   <div className="progress_bar justify-content-center">
                                    
                                     {questions && (<>
