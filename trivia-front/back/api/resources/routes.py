@@ -1,3 +1,4 @@
+
 from flask import jsonify, request, make_response
 from api.resources.functions import give_answer
 from flask_restful import Resource, abort
@@ -12,6 +13,8 @@ import random
 #--- for excel reading
 
 from flask import  render_template, request
+
+from datetime import datetime
 
 class SingleQuestion(Resource): #to get all questions, or create a new one
     def get(self):
@@ -30,13 +33,14 @@ class SingleQuestion(Resource): #to get all questions, or create a new one
 
         options = data.get("options")
         
-        if not data.get("question") or not data.get("answer") or not options:
+        if not data.get("question") or not data.get("answer") or not options or not data.get("date"):
             return make_response(jsonify({"msg" : "missing data"}),400)
         if len(options) < 2:
             return make_response(jsonify({"msg" : "need to have at least 2 options, coudnt create question " + data.get("question")}),400)
 
-        
-        question_to_add = Question(question = data.get("question"), answer= data.get("answer"))
+        date_to_add = datetime.strptime(data.get("date"), '%d/%m/%Y')
+
+        question_to_add = Question(question = data.get("question"), answer= data.get("answer"), date = date_to_add)
         db.session.add(question_to_add)
         db.session.commit()
         
@@ -152,22 +156,25 @@ class startGame(Resource): #to start the game
 
         questions = Question.query.all()
         random.shuffle(questions) #esto o generar numero por id y extraer del array esos numeros por id
+        
+        today_questions = filter(lambda x: (x.serialize().get("date") == datetime.today().strftime("%d/%m/%Y")), questions)
         alldic = []
-
+        
         if(ammount == 0):
             
             
-            for i in questions:
-
+            for i in today_questions:
+                
+                
                 question_dic = i.serialize()
                 question_result = give_answer(question_dic)
                 alldic.append(question_result)
             
         else:
-           
+            today_question_list = list(today_questions)
             for i in range(ammount):
                 
-                question_dic = questions[i].serialize()
+                question_dic = today_question_list[i].serialize()
                 
                 question_result = give_answer(question_dic)
 
@@ -178,7 +185,11 @@ class startGame(Resource): #to start the game
         
 
 class asd(Resource): #to start the game
-    def post(self):
-        data = request.json
-        
+    def get(self):
+        question = Question.query.get(3)
+        print(question.date.strftime("%d/%m/%Y"))
+        if(question.serialize().get("date") == datetime.today().strftime("%d/%m/%Y")):
+            print("asd")
+            
+
         return jsonify({"msg":"asd"})

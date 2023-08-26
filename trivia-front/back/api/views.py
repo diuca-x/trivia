@@ -61,9 +61,10 @@ def file_loader():
         options = ws.cell(row=i,column=3).value.split(",")
 
         question_to_add["options"] = options
-    
+        question_to_add["date"] = ws.cell(row=i,column=4).value.strftime('%d/%m/%Y')
+        
         response = requests.post(os.environ.get("VITE_BACKEND_URL", False) + "api/question", json=question_to_add)
-
+        
         print(response.json())
     
 
