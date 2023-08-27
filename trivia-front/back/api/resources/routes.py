@@ -154,42 +154,44 @@ class handleOption(Resource): #to get a specific option, delete an option or mod
 class startGame(Resource): #to start the game
     def get(self,ammount):
 
-        questions = Question.query.all()
-        random.shuffle(questions) #esto o generar numero por id y extraer del array esos numeros por id
+        today_questions = Question.query.filter_by(date = datetime.today().replace(hour=0, minute=0, second=0,microsecond=0 )).all()
+        random.shuffle(today_questions) #esto o generar numero por id y extraer del array esos numeros por id
         
-        today_questions = filter(lambda x: (x.serialize().get("date") == datetime.today().strftime("%d/%m/%Y")), questions)
+        
+
+        if(ammount > len(today_questions)):
+            return jsonify({"msg": "not enough questions!"})   
+         
         alldic = []
-        
         if(ammount == 0):
+            ammount = len(today_questions)
+        c = 0
+        
+        
             
+        while c < ammount:
+                
+                
+            question_dic = today_questions[c].serialize()
+            question_result = give_answer(question_dic)
+            alldic.append(question_result)
+
+            c+=1
             
-            for i in today_questions:
-                
-                
-                question_dic = i.serialize()
-                question_result = give_answer(question_dic)
-                alldic.append(question_result)
-            
-        else:
-            today_question_list = list(today_questions)
-            for i in range(ammount):
-                
-                question_dic = today_question_list[i].serialize()
-                
-                question_result = give_answer(question_dic)
-
-                alldic.append(question_result)
-
-
+        
         return jsonify(alldic)            
         
 
 class asd(Resource): #to start the game
     def get(self):
-        question = Question.query.get(3)
-        print(question.date.strftime("%d/%m/%Y"))
-        if(question.serialize().get("date") == datetime.today().strftime("%d/%m/%Y")):
-            print("asd")
-            
+
+
+        questions = Question.query.filter_by(date = datetime.today().replace(hour=0, minute=0, second=0,microsecond=0 )).all()
+
+        questions = Question.query.all()
+        for i in questions:
+            print(i.date)
+        
+        print(questions)
 
         return jsonify({"msg":"asd"})
