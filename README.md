@@ -8,7 +8,7 @@ This is a trivia game where you are given one option and have to choose the corr
 Getting Started
 To get started, you will need to have Python 3.8+ installed. You can install the dependencies by running the following commands:
 
-```cd back```
+```cd trivia-front/back```
 
 ```poetry install```
 
@@ -28,9 +28,9 @@ Once the dependencies are installed, you can start the front by running the foll
 
 ```npm run dev```
 
-create a .env file int the root with the variable SQLALCHEMY_DATABASE_URI="your database url"  and another one inside the trivia-front folder with the name VITE_BACKEND_URL="the url of your backend"
+create a .env file in the trivia-front folder with the variable SQLALCHEMY_DATABASE_URI="your database url"  and another one with the name VITE_BACKEND_URL="the url of your backend"
   
-Then for setting up the db
+Then for setting up the db (inside the poetry shell)
 
 ```flask db init```
 
