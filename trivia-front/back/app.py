@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from extensions import db
 from extensions import migrate
 from extensions import cors
-
+from extensions import jwt
 
 
 load_dotenv()
@@ -24,6 +24,7 @@ app.config.from_object("config")
 db.init_app(app)
 migrate.init_app(app,db)
 cors.init_app(app, resources={r"/api/*"})
+jwt.init_app(app)
 #debug = os.environ.get("FLASK_DEBUG", False)
 
 if __name__ == "__main__":

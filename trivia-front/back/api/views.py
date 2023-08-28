@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, redirect, url_for
 from flask_restful import Api
 
 from api.resources.routes import SingleQuestion, specificQuestion, addOptions, handleOption, startGame,asd
-from api.admin_routes import Signupator
+from api.admin_routes import Signupator, Loginator
 
 #--- for the excel
 import openpyxl
@@ -27,6 +27,7 @@ api.add_resource(startGame, "/startGame/<int:ammount>" )
 api.add_resource(asd, "/asd" )
 
 auth.add_resource(Signupator, "/signupator")
+auth.add_resource(Loginator, "/loginator")
 
 @auth_blueprint.route("/signup")
 def signup(): 
@@ -34,8 +35,11 @@ def signup():
 
 @auth_blueprint.route("/login")
 def login(): 
-   return render_template("login.jsx")
+   return render_template("login.html")
 
+@auth_blueprint.route("/loged")
+def loged(): 
+   return render_template("loged.html")
 
 
 @blueprint.route("/excel")

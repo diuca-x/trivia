@@ -8,10 +8,11 @@
 <body style="background-color: gray;">
     <h1>Login</h1>
     <form  id="login-form"  enctype="application/json" >
-        <input type="text" name="name" placeholder="Username">
+        <input type="text" name="user" placeholder="Username">
         <input type="password" name="password" placeholder="Password">
         <input type="submit" value="Submit">
     </form>
+    <a href="{{ url_for('auth.login') }}">Back</a>
 
     <script>
 
@@ -34,6 +35,12 @@
 
             const result = await response.json()
             alert(result.msg);
+            alert(response.status)
+            if(response.status == 200){
+                localStorage.setItem("jwt-token", result.token);
+                window.location.href = "/auth/loged"
+            }
+            
         });
     </script>
 </body>

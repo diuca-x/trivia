@@ -1,6 +1,8 @@
 from flask import jsonify, request, make_response
 from api.resources.functions import give_answer
 from flask_restful import Resource, abort
+from flask_jwt_extended import create_access_token
+
 
 #---import models
 from models.users import User
@@ -42,14 +44,30 @@ class Signupator(Resource): #to get all questions, or create a new one
         return jsonify({"msg" : "user registered"})
     
 
-    class Signupator(Resource): #to get all questions, or create a new one
-        def post(self):
+class Loginator(Resource): #to get all questions, or create a new one
+    def post(self):
             data = request.json
             user = data.get("user")
             password = data.get("password")
 
+            
             if not user or not password:
                 return make_response(jsonify({"msg" :  "missing data"}),400)
             
             hash = ph.hash(password)
             user = User.query.filter_by(user=user).first()
+
+            if not user:
+                return make_response(jsonify({"msg": "Wrong username or password"}), 400)
+            else:
+                try:
+                    if(not ph.verify(user.password,password)):
+                       
+                        return make_response(jsonify({"msg": "Wrong username or password"}), 400)
+                except: 
+                    
+                    return make_response(jsonify({"msg": "Wrong username or password"}), 400)
+            print("Asd")
+            token = create_access_token(identity=user.id)
+            return jsonify({ "token": token, "msg":"login success"})
+
