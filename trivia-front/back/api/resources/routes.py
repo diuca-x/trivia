@@ -155,7 +155,7 @@ class startGame(Resource): #to start the game
     def get(self,ammount):
 
         today_questions = Question.query.filter_by(date = datetime.today().replace(hour=0, minute=0, second=0,microsecond=0 )).all()
-        random.shuffle(today_questions) #esto o generar numero por id y extraer del array esos numeros por id
+        random.shuffle(today_questions) 
         
         
 
@@ -167,11 +167,8 @@ class startGame(Resource): #to start the game
             ammount = len(today_questions)
         c = 0
         
-        
-            
-        while c < ammount:
-                
-                
+         
+        while c < ammount:     
             question_dic = today_questions[c].serialize()
             question_result = give_answer(question_dic)
             alldic.append(question_result)

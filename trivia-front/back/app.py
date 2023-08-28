@@ -1,7 +1,7 @@
 
 from flask import Flask, jsonify
 import os
-from api.views import blueprint
+from api.views import blueprint, auth_blueprint
 #--- env
 from dotenv import load_dotenv
 #--- database
@@ -17,6 +17,7 @@ load_dotenv()
 
 app = Flask(__name__)
 app.register_blueprint(blueprint=blueprint)
+app.register_blueprint(blueprint=auth_blueprint)
 app.config.from_object("config")
 
 
