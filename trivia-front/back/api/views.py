@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, redirect, url_for
+from flask import Blueprint, jsonify, make_response, redirect, url_for
 
 
 from flask_restful import Api
@@ -12,6 +12,11 @@ from flask import render_template, request
 from fileinput import filename
 import requests
 import os
+
+from flask_jwt_extended import jwt_required
+
+
+
 
 blueprint = Blueprint("api", __name__, url_prefix="/api")
 auth_blueprint = Blueprint("auth", __name__, url_prefix="/auth")
@@ -29,17 +34,21 @@ api.add_resource(asd, "/asd" )
 auth.add_resource(Signupator, "/signupator")
 auth.add_resource(Loginator, "/loginator")
 
-@auth_blueprint.route("/signup")
-def signup(): 
-     return render_template("signup.html")
-
 @auth_blueprint.route("/login")
 def login(): 
    return render_template("login.html")
 
+
 @auth_blueprint.route("/loged")
 def loged(): 
    return render_template("loged.html")
+
+@auth_blueprint.route("/signup")
+def signup(): 
+     return render_template("signup.html")
+
+
+
 
 
 @blueprint.route("/excel")
@@ -47,7 +56,9 @@ def excel_loader():
     return render_template("file_loader.html")
 
 @blueprint.route("/load_file", methods = ["POST"])
+@jwt_required()
 def file_loader():
+    print(request.files)
     file = request.files['file']
     file.save(file.filename)
     wb = openpyxl.load_workbook(file.filename)
@@ -65,6 +76,8 @@ def file_loader():
             row_ammount += 1
         c += 1
 
+    if(row_ammount) < 10:
+        return make_response(jsonify({"msg" : "Error, less than 10 questions"}),400)
     
     for i in range(2,row_ammount + 2):
         
@@ -90,4 +103,4 @@ def file_loader():
     
 
 
-    return jsonify({"msg": "asd"})
+    return jsonify({"msg": "added"})

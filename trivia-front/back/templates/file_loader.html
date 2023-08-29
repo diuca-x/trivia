@@ -7,11 +7,47 @@
  
 <body>
     <h1>Upload Excel File (.xlsx)</h1>
-    <form action="{{ url_for('api.file_loader') }}" method="post" enctype="multipart/form-data">
+    <form  id="excel-form"  enctype="multipart/form-data" >
         <input type="file" name="file"
-            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-        <input type="submit" value="Upload">
+            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" requ>
+        <input type="submit" value="submit">
     </form>
+    <a href="{{ url_for('auth.loged') }}">Back</a>
+
+    <script>
+
+        document.getElementById("excel-form").addEventListener("submit", async (event) => {
+            event.preventDefault();
+            
+            const form = event.target;
+            const fileInput = form.querySelector('input[type="file"]');
+
+            let data = new FormData();
+
+            data.append('file', fileInput.files[0]); 
+            
+            const token = localStorage.getItem("jwt-token");
+            const response = await fetch("/api/load_file", {
+                method: "POST",
+                headers: {
+                    
+                    Authorization: `Bearer ${token}`,
+                },
+                body: data
+            });
+
+            const result = await response.json()
+            alert(result.msg);
+            
+            if(response.status == 200){
+                window.location.href = "/auth/loged"; 
+            } else if (response.status == 401){
+                window.location.href = "/auth/login"; 
+            }
+
+            
+        });
+    </script>
 </body>
  
 </html>

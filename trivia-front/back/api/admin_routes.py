@@ -1,7 +1,7 @@
 from flask import jsonify, request, make_response
 from api.resources.functions import give_answer
 from flask_restful import Resource, abort
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token,jwt_required
 
 
 #---import models
@@ -17,6 +17,7 @@ from extensions import ph
 
 
 class Signupator(Resource): #to get all questions, or create a new one
+    method_decorators=[jwt_required()]
     def post(self):
         
         data = request.json
