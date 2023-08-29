@@ -1,3 +1,4 @@
+from datetime import timedelta
 import os
 
 from dotenv import load_dotenv
@@ -14,3 +15,5 @@ FLASK_DEBUG = os.environ.get("FLASK_DEBUG", False)
 SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
 JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
 JWT_TOKEN_LOCATION = ["headers"]
+JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes = 20)
+
