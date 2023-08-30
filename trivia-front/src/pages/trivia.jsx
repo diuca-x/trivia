@@ -4,6 +4,7 @@ import "../syles/trivia.css"
 
 import { Context } from "../store/appContext";
 
+import { FaClock } from "react-icons/fa6";
 
 const Trivia = () =>{
     const {store, actions} = useContext(Context)
@@ -116,11 +117,40 @@ const Trivia = () =>{
       setHint(remove)
     }
 
+    const get_dateinator = () => {
+      const date = new Date();
+      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+      const dayOfWeek = daysOfWeek[date.getDay()];
+      const dayOfMonth = date.getDate();
+      const month = monthsOfYear[date.getMonth()];
+      const year = date.getFullYear();
+
+      return `${dayOfWeek} ${dayOfMonth} of ${month} ${year}`;
+    }
     return(
         <>
-            <div className="container-fluid text-center ">
-                {`Time: ${time.minutes < 10 ? '0' : ''}${time.minutes}:${time.seconds < 10 ? '0' : ''}${time.seconds}`}
-                <div className="row "> <h1>Trivia</h1></div>
+            <div className="container-fluid  ">
+              <div className="row border title_row"> 
+                <div className="col d-flex">
+                  <h1 className="title mb-0">Trivia diaria®</h1> <p className=" mb-0 mt-auto "> {get_dateinator()}</p>
+                </div>
+              </div>
+              <div className="row border days_row"> 
+                <div className="col d-flex">
+                  <h1 className="title mb-0">aca los dias </h1> 
+                </div>
+              </div>
+              <div className="row border game_data_row"> 
+                <div className="col d-flex">
+                  <FaClock className="clock"/>{` ${time.minutes < 10 ? '0' : ''}${time.minutes}:${time.seconds < 10 ? '0' : ''}${time.seconds}`} 
+                </div>
+              </div>
+                
+                <br></br>
+                {`Score: ${score}`}
+                
                 <div className="row">
                     {question && (<>
                             <h2>{question.question}</h2>

@@ -10,12 +10,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-brands-svg-icons": "^6.4.2",
+    "@fortawesome/free-regular-svg-icons": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@fortawesome/react-native-fontawesome": "^0.3.0",
     "bootstrap": "^5.3.1",
     "cross-env": "^7.0.3",
     "fetch": "^1.1.0",
+    "i": "^0.3.7",
+    "npm": "^9.8.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.10.1",
+    "react-native-svg": "^13.13.0",
     "react-router-dom": "^6.14.2",
     "vite-plugin-dynamic-import": "^1.5.0"
   },
