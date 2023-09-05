@@ -3,19 +3,23 @@
  
 <head>
     <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
  
-<body style="background-color: gray;">
-    <h1 >Login</h1>
-    <form  id="login-form"  enctype="application/json" >
-        <input type="text" name="user" placeholder="Username">
-        <input type="password" name="password" placeholder="Password">
-        <input type="submit" value="Submit">
-    </form>
+<body style="background-color: gray;" >
+    <div id="content-container">
+        <h1 >Login</h1>
+        <form  id="login-form"  enctype="application/json" >
+            <input type="text" name="user" placeholder="Username">
+            <input type="password" name="password" placeholder="Password">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    
     
 
     <script>
-
+         
         document.getElementById("login-form").addEventListener("submit", async (event) => {
             event.preventDefault();
 
@@ -38,13 +42,182 @@
             
             if(response.status == 200){
                 localStorage.setItem("jwt-token", result.token);
-                
-                window.location.href = "/auth/loged"; 
-                
+                const token = localStorage.getItem("jwt-token")
+                const response2 = await fetch("/auth/loged", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                });
+                const result2 = await response2.text(); // Get the HTML content as text
 
+                if (response2.status === 200) {
+                    // Display the HTML content in the container element
+                    
+                    var myDiv = document.getElementById("content-container");
+                    
+                    myDiv.innerHTML = result2;
+
+                    window.history.pushState({}, '', '/home');
+
+                } 
             }
-            
         });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script>
+        
+        const excelinator = async() =>{
+            const token = localStorage.getItem("jwt-token")
+                const response = await fetch("/auth/excel", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                });
+                const result = await response.text(); // Get the HTML content as text
+
+                if (response.status === 200) {
+                    // Display the HTML content in the container element
+                    
+                    var myDiv = document.getElementById("content-container");
+                    
+                    myDiv.innerHTML = result;
+
+                    window.history.pushState({}, '', '/excel');
+
+                } else {
+                    alert("Session timed out")
+                    window.location.href = "/auth/login";
+                }
+        }
+        const file_loader = async (event) => {
+            event.preventDefault();
+            console.log("asd2"); //
+            const form = event.target;
+            const fileInput = form.querySelector('input[type="file"]');
+
+            let data = new FormData();
+
+            data.append('file', fileInput.files[0]); 
+            
+            const token = localStorage.getItem("jwt-token");
+            const response = await fetch("/api/load_file", {
+                method: "POST",
+                headers: {
+                    
+                    Authorization: `Bearer ${token}`,
+                },
+                body: data
+            });
+
+            const result = await response.json()
+            alert(result.msg);
+            
+            if(response.status >= 400){                
+                alert("Session timed out")
+                window.location.href = "/auth/login";
+                
+            }
+
+            
+        };
+
+        const home_returner = async() =>{
+            const token = localStorage.getItem("jwt-token")
+                const response = await fetch("/auth/loged", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                });
+                const result = await response.text(); // Get the HTML content as text
+
+                if (response.status === 200) {
+                    // Display the HTML content in the container element
+                    
+                    var myDiv = document.getElementById("content-container");
+                    
+                    myDiv.innerHTML = result;
+
+                    window.history.pushState({}, '', '/home');
+
+                } else {
+                    alert("Session timed out")
+                    window.location.href = "/auth/login";
+                }
+        }
+    </script>
+
+    <script>
+        const signupator = async() =>{
+            const token = localStorage.getItem("jwt-token")
+                const response = await fetch("/auth/signup", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                });
+                const result = await response.text(); // Get the HTML content as text
+
+                if (response.status === 200) {
+                    // Display the HTML content in the container element
+                    
+                    var myDiv = document.getElementById("content-container");
+                    
+                    myDiv.innerHTML = result;
+
+                    window.history.pushState({}, '', '/signup');
+
+                }else {
+                    alert("Session timed out")
+                    window.location.href = "/auth/login";
+                }
+        }
+
+        const user_addinator = async (event) =>{
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+            const token = localStorage.getItem("jwt-token");
+            console.log(token)
+            const response = await fetch("/auth/signupator", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json()
+            alert(result.msg);
+            document.getElementById("signup-form").reset();
+
+            if(response.status >= 400) {
+                alert("Session timed out")
+                window.location.href = "/auth/login";
+            }
+
+        }
+    </script>
+
+    <script>
+        const logoutinator = () =>{
+            localStorage.clear()
+            window.location.href = "/auth/login"; 
+            
+        }
+        
     </script>
 </body>
  
