@@ -40,12 +40,10 @@ def login():
 
 
 @auth_blueprint.route("/loged")
-@jwt_required()
 def loged(): 
    return render_template("loged.html")
 
 @auth_blueprint.route("/signup")
-@jwt_required()
 def signup(): 
      return render_template("signup.html")
 
@@ -53,8 +51,7 @@ def signup():
 
 
 
-@auth_blueprint.route("/excel")
-@jwt_required()
+@blueprint.route("/excel")
 def excel_loader(): 
     return render_template("file_loader.html")
 
@@ -100,7 +97,7 @@ def file_loader():
         question_to_add["options"] = options
         question_to_add["date"] = ws.cell(row=i,column=4).value.strftime('%d/%m/%Y')
         
-        response = requests.post(os.environ.get("VITE_BACKEND_URL", False) + "/api/question", json=question_to_add)
+        response = requests.post(os.environ.get("VITE_BACKEND_URL", False) + "api/question", json=question_to_add)
         
         print(response.json())
     

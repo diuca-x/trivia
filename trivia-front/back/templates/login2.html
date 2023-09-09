@@ -5,7 +5,7 @@
     <title>Login</title>
 </head>
  
-<body style="background-color: gray;">
+<body style="background-color: gray;" id="content-container">
     <h1 >Login</h1>
     <form  id="login-form"  enctype="application/json" >
         <input type="text" name="user" placeholder="Username">
@@ -39,7 +39,21 @@
             if(response.status == 200){
                 localStorage.setItem("jwt-token", result.token);
                 
-                window.location.href = "/auth/loged"; 
+                const respons = await fetch("/auth/loged", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${result.token}`
+                },
+                });
+                const resul = await respons.text(); // Get the HTML content as text
+
+                if (respons.status === 200) {
+                    // Display the HTML content in the container element
+                    const container = document.getElementById("content-container");
+                    container.innerHTML = resul;
+                }
+            
                 
 
             }
