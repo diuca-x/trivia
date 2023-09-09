@@ -3,6 +3,34 @@
  
 <head>
     <title>Upload/View Excel</title>
+
+    <script>
+        
+        const token_validator = async(token) =>{
+            const response = await fetch("/auth/validator", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                
+            });
+            if (response.status>=400){
+                alert("invalid token")
+                window.location.href = "/auth/login"
+                
+            } 
+            
+        }
+        
+        const token = localStorage.getItem("jwt-token")
+        if(token == null){
+            alert("User not logged")
+            window.location.href = "/auth/login"; 
+        } 
+        token_validator(token)
+        
+    </script>
 </head>
  
 <body>
@@ -27,6 +55,11 @@
             data.append('file', fileInput.files[0]); 
             
             const token = localStorage.getItem("jwt-token");
+            if (token == null){
+                alert("User not loged")
+                window.location.href = "/auth/login"; 
+            }
+
             const response = await fetch("/api/load_file", {
                 method: "POST",
                 headers: {
@@ -37,11 +70,13 @@
             });
 
             const result = await response.json()
-            alert(result.msg);
+            
             
             if(response.status == 200){
+                alert(result.msg);
                 window.location.href = "/auth/loged"; 
-            } else if (response.status == 401){
+            } else if (response.status <= 400){
+                alert(result.msg);
                 window.location.href = "/auth/login"; 
             }
 

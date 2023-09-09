@@ -3,16 +3,49 @@
  
 <head>
     <title>Hello</title>
+
+    <script>
+        
+        const token_validator = async(token) =>{
+            const response = await fetch("/auth/validator", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                
+            });
+            if (response.status>=400){
+                alert("invalid token")
+                window.location.href = "/auth/login"
+                
+            } 
+            
+        }
+        
+        const token = localStorage.getItem("jwt-token")
+        if(token == null){
+            alert("User not logged")
+            window.location.href = "/auth/login"; 
+        } 
+        token_validator(token)
+        
+    </script>
 </head>
  
 <body style="background-color: gray;">
     <h1>Hello</h1>
     
-    <a href="{{ url_for('api.excel_loader') }}">Excel</a>
+    <a href="{{ url_for('auth.excel_loader') }}">Excel</a>
     <a href="{{ url_for('auth.signup') }}">signup</a>
-    <a href="{{ url_for('auth.login') }}">Back to login</a>
+    
+    <button class="btn" onclick="logoutinator()">Back to login</button>
     <script>
-
+        const logoutinator = () =>{
+            
+            localStorage.clear()
+            window.location.href = "/auth/login"; 
+        }
       
     </script>
 </body>
