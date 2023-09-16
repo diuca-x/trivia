@@ -75,7 +75,7 @@
             if(response.status == 200){
                 alert(result.msg);
                 window.location.href = "/auth/loged"; 
-            } else if (response.status <= 400){
+            } else if (response.status >= 400){
                 alert(result.msg);
                 window.location.href = "/auth/login"; 
             }
