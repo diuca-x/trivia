@@ -13,7 +13,7 @@ from fileinput import filename
 import requests
 import os
 
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required,get_jwt
 
 
 
@@ -56,7 +56,9 @@ def excel_loader():
 @blueprint.route("/load_file", methods = ["POST"])
 @jwt_required()
 def file_loader():
-    print(request.files)
+    token_dic = get_jwt()
+    token = token_dic.get("jti")
+    
     file = request.files['file']
     file.save(file.filename)
     wb = openpyxl.load_workbook(file.filename)
@@ -71,6 +73,8 @@ def file_loader():
         has_text = ws.cell(row=c, column=1).value
         
         if(has_text):
+            if( not ws.cell(row=c,column=1).value or not ws.cell(row=c,column=2).value or not ws.cell(row=c,column=3).value or not ws.cell(row=c,column=4).value):
+                    return make_response(jsonify({"msg" : f"Error, row {c} of the file is missing data"}),400)
             row_ammount += 1
         c += 1
 
@@ -95,7 +99,9 @@ def file_loader():
         question_to_add["options"] = options
         question_to_add["date"] = ws.cell(row=i,column=4).value.strftime('%d/%m/%Y')
         
-        response = requests.post(os.environ.get("VITE_BACKEND_URL", False) + "api/question", json=question_to_add)
+        headers = {'Authorization': 'Bearer {}'.format(token)}
+
+        response = requests.post(os.environ.get("VITE_BACKEND_URL", False) + "api/question", json=question_to_add, headers=headers)
         
         print(response.json())
     

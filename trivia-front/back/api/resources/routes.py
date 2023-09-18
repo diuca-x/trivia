@@ -16,7 +16,10 @@ from flask import  render_template, request
 
 from datetime import datetime
 
+from flask_jwt_extended import jwt_required
+
 class SingleQuestion(Resource): #to get all questions, or create a new one
+    method_decorators=[jwt_required()]
     def get(self):
         all = Question.query.all()
         
