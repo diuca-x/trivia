@@ -52,10 +52,11 @@ The file needs to have the next structure:
 - Now once started, the game always loads 10 questions from the db with todays date
 
 - In the game itself you will see
-Three answer choices for each question
-A scorecard to track your progress
-A clock to track how much time it takes to answer all 10 questions
-A hint option to remove one incorrect answer
+
+.Three answer choices for each question
+.A scorecard to track your progress
+.A clock to track how much time it takes to answer all 10 questions
+.A hint option to remove one incorrect answer
 
 To-Do
 The following are some things that I plan to add to the trivia game in the future:
