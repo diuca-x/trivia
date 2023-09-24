@@ -54,11 +54,15 @@ The file needs to have the next structure:
 - In the game itself you will see
 
 .Three answer choices for each question
+
 .A scorecard to track your progress
+
 .A clock to track how much time it takes to answer all 10 questions
+
 .A hint option to remove one incorrect answer
 
 To-Do
+
 The following are some things that I plan to add to the trivia game in the future:
 
 More trivia questions
