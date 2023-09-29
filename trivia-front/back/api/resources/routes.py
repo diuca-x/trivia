@@ -182,7 +182,7 @@ class startGame(Resource): #to start the game
         return jsonify(alldic)            
         
 
-class asd(Resource): #to start the game
+class asd(Resource): #to test
     def get(self):
 
 

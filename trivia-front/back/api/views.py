@@ -103,7 +103,10 @@ def file_loader():
 
         response = requests.post(os.environ.get("VITE_BACKEND_URL", False) + "api/question", json=question_to_add, headers=headers)
         
-        print(response.json())
+        if (response.status_code >=400):
+                return make_response(response.json(),400)
+
+        
     
 
 
